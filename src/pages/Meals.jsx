@@ -71,7 +71,7 @@ export const Meals = () => {
 
                 <button
                   onClick={() => dispatch(ADD(meal))}
-                  className="px-4 py-2 text-sm rounded-full bg-green-500 text-white hover:bg-green-600 transition"
+                  className="px-4 py-2 text-sm rounded-full bg-green-500 text-white hover:bg-green-600 transition cursor-pointer"
                 >
                   Add
                 </button>
