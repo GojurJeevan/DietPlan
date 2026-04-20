@@ -30,7 +30,7 @@ export const Meals = () => {
     filteredItems = items.filter((meal) => {
       if (!protein) return true;
 
-      return meal.protein == Number(protein);
+      return meal.protein >= Number(protein);
     });
   }
   let meals = filteredItems.slice((page - 1) * perPage, page * perPage);
