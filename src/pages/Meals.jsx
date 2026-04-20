@@ -120,23 +120,21 @@ export const Meals = () => {
           )}
         </div>
 
-        {pagination > 1 && (
-          <div className="flex justify-center gap-2 mt-10 flex-wrap">
-            {Array.from({ length: pagination }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => dispatch(setPage(i + 1))}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-                  page === i + 1
-                    ? "bg-green-600 text-white shadow"
-                    : "bg-white border border-green-300 text-green-700 hover:bg-green-100"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="flex justify-center gap-2 mt-10 flex-wrap">
+          {Array.from({ length: pagination }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => dispatch(setPage(i + 1))}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition ${
+                page === i + 1
+                  ? "bg-green-600 text-white shadow"
+                  : "bg-white border border-green-300 text-green-700 hover:bg-green-100"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
