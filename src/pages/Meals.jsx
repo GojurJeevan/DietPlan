@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchMeals, setPage } from "../redux/MealsSlice";
 import { ADD } from "../redux/TodoSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { Protein } from "./Protein";
 
 export const Meals = () => {
-  const { items, loading, page, perPage } = useSelector(
-    (state) => state.meals
-  );
+  const { items, loading, page, perPage } = useSelector((state) => state.meals);
+  const [protein, setProtein] = useState("");
 
   const dispatch = useDispatch();
 
@@ -23,20 +25,32 @@ export const Meals = () => {
     );
   }
 
-  let meals = [];
+  let filteredItems = [];
   if (Array.isArray(items)) {
-    meals = items.slice((page - 1) * perPage, page * perPage);
-  }
+    filteredItems = items.filter((meal) => {
+      if (!protein) return true;
 
-  const pagination = Math.ceil(items.length / perPage);
+      return meal.protein == Number(protein);
+    });
+  }
+  let meals = filteredItems.slice((page - 1) * perPage, page * perPage);
+
+  const pagination = Math.ceil(filteredItems.length / perPage);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-green-50 to-blue-100 py-10 px-4">
       <div className="max-w-5xl mx-auto">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-10 gap-4">
+          <h1 className="text-4xl font-bold text-green-700">🍽️ Meals</h1>
 
-        <h1 className="text-4xl font-bold text-center text-green-700 mb-10">
-          🍽️ Meals
-        </h1>
+          <Protein
+            protein={protein}
+            setProtein={(value) => {
+              setProtein(value);
+              dispatch(setPage(1));
+            }}
+          />
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {meals.map((meal) => (
@@ -44,7 +58,6 @@ export const Meals = () => {
               key={meal.id}
               className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-5 flex flex-col items-center text-center"
             >
-
               <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-green-100 mb-4">
                 <img
                   src={meal.image || "/src/assets/hero.png"}
@@ -57,9 +70,7 @@ export const Meals = () => {
                 {meal.name}
               </h2>
 
-              <p className="text-sm text-gray-500 mb-3">
-                {meal.calories} kcal
-              </p>
+              <p className="text-sm text-gray-500 mb-3">{meal.protein}gm protein</p>
 
               <div className="flex gap-3 mt-auto">
                 <Link
@@ -95,7 +106,6 @@ export const Meals = () => {
             </button>
           ))}
         </div>
-
       </div>
     </div>
   );
